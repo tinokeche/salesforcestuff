@@ -1,0 +1,41 @@
+
+   <template>
+    <div class="spinner">
+      <template if:true={isLoading}>
+           <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+           </lightning-spinner>
+      </template>
+    </div>
+    <div class="container">
+      <div class="info">
+        <p>Enter your South Africa ID number to search for banking/public holidays in your year of birth.</p>
+      </div>
+        <div class="slds-grid slds-grid--align-center slds-grid--vertical-align-center">
+            <div class="slds-col slds-size_2-of-3">
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                    <lightning-icon class="slds-input__icon slds-input__icon_right slds-icon slds-icon-text-default search-icon" icon-name="utility:search" size="x-small"></lightning-icon>
+                    <lightning-input type="text" class = "text-input" value={idNumber} onchange={handleInputChange} ></lightning-input>
+                </div>
+            </div>
+            <div class="slds-col">
+                <lightning-button variant="brand" label="Search"  onclick={searchForHolidays} class="slds-m-left_x-small" disabled={isSearchDisabled}></lightning-button>
+            </div>
+        <template if:true={errorMessage}>
+          <div class="error">{errorMessage}</div>
+        </template>
+      </div>
+      <template if:true={holidays}>
+        <div class="public-holidays">
+          <h2>Public holidays in your year of birth:</h2>
+          <template if:true={noHolidays}>
+            <p>Whoops! Looks like there are no public holidays in your year of birth</p>
+          </template>
+          <ul>
+            <template for:each={holidays} for:item="holiday">
+              <li key={holiday.urlid}><strong>{holiday.name}({holiday.date_Z.iso})</strong> - {holiday.description}</li>
+            </template>
+          </ul>
+        </div>
+      </template>
+    </div>
+  </template>
